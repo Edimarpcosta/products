@@ -1,21 +1,24 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>Busca de Imagem</title>
+    <title>Imagem de Peixes/Plantas COD/Referencia</title>
 </head>
+
 <body>
-    <h1>Busca de Imagem</h1>
+    <h1>Imagem de Peixes/Plantas COD/Referencia</h1>
     <form onsubmit="return buscarImagem(event)">
         <label for="texto">Digite o texto:</label>
         <input type="text" id="texto" required>
         <button type="submit">Buscar</button>
     </form>
+    <label id="encontrado-label"></label>
     <div id="imagem-container"></div>
-
     <script>
         function buscarImagem(event) {
             event.preventDefault();
             const texto = document.getElementById('texto').value;
+            const encontradoLabel = document.getElementById('encontrado-label');
             const container = document.getElementById('imagem-container');
 
             // URL da imagem baseado no texto inserido
@@ -25,14 +28,21 @@
 
             // Verifica se a primeira imagem está disponível
             verificarURL(url1)
-                .then(() => exibirImagem(url1, container))
+                .then(() => {
+                    exibirImagem(url1, container);
+                    encontradoLabel.textContent = "Cod encontrado";
+                })
                 .catch(() => {
                     // Se a primeira imagem não estiver disponível, verifica a segunda
                     verificarURL(url2)
-                        .then(() => exibirImagem(url2, container))
+                        .then(() => {
+                            exibirImagem(url2, container);
+                            encontradoLabel.textContent = "Ref. encontrada";
+                        })
                         .catch(() => {
                             // Se a segunda imagem não estiver disponível, abre a página do Google
                             window.open(url3, '_blank');
+                            encontradoLabel.textContent = "";
                         });
                 });
 
@@ -53,4 +63,5 @@
         }
     </script>
 </body>
+
 </html>
